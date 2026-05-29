@@ -1,0 +1,1 @@
+enum class Suit { SPADES, HEARTS, DIAMONDS, CLUBS };
