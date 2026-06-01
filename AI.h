@@ -10,4 +10,5 @@ public :
 
 	Card playCard(const Trick& currentTrick, const GameRules* rule) override;
 };
+
 #endif
