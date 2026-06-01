@@ -129,6 +129,20 @@
   <ItemGroup>
     <ClCompile Include="JeuDePli.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AI.h" />
+    <ClInclude Include="Card.h" />
+    <ClInclude Include="DameDePiqueRules.h" />
+    <ClInclude Include="Deck.h" />
+    <ClInclude Include="GameEngine.h" />
+    <ClInclude Include="GameRules.h" />
+    <ClInclude Include="Hand.h" />
+    <ClInclude Include="Human.h" />
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="Rank.h" />
+    <ClInclude Include="Suit.h" />
+    <ClInclude Include="Trick.h" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
