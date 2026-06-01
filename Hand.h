@@ -5,6 +5,7 @@
 
 #include <vector>
 
+// ON VA TRANSFO LES CARTES en unique ptr
 class Hand {
 private: 
 	std::vector<Card> cards;
