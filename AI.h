@@ -10,6 +10,5 @@ public :
 
 	Card playCard(const Trick& currentTrick, const GameRules* rule) override;
 };
-#endif
 
-julien sente le lapin version 2
+#endif
