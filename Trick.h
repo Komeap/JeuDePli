@@ -10,17 +10,17 @@ class Trick {
 private :
 	// Vecteur contenant l’historique des cartes jouées
 	// Chaque élément est une paire (Player*, Card)
-	std::vector<std::pair<Player*, Card>> playedCards;
+	std::vector<std::pair<Player*, std::unique_ptr<Card>>> playedCards;
 
 public:
 	Trick() = default;
 	~Trick() = default;
 
-	void addCard(Player* player, const Card& card);
+	void addCard(Player* player, std::unique_ptr<Card> card);
 
 	// nodiscard permet d'indiquer au compilateur qu'on ne doit pas ignorer le retour.
 	[[nodiscard]] Suit getLeadSuit() const;
-	[[nodiscard]] const std::vector<std::pair<Player*, Card>>& getPlayedCards() const { return playedCards; }
+	[[nodiscard]] const std::vector<std::pair<Player*, std::unique_ptr<Card>>>& getPlayedCards() const { return playedCards; }
 
 };
 #endif

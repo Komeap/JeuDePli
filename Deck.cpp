@@ -39,12 +39,12 @@ void Deck::shuffle() {
  *
  * @throws std::runtime_error si le deck est vide.
  */
-Card Deck::drawCard() {
+std::unique_ptr<Card> Deck::drawCard() {
     if (cards.empty()) {
         throw std::runtime_error("Deck::drawCard - empty deck");
     }
 
-    Card card = std::move(cards.back());
+    std::unique_ptr<Card> card = std::move(cards.back());
     cards.pop_back();
     return card;
 }

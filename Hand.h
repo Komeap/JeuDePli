@@ -4,21 +4,21 @@
 #include "Card.h"
 
 #include <vector>
+#include <memory>
+#include <algorithm>
 
-// ON VA TRANSFO LES CARTES en unique ptr
+
 class Hand {
 private: 
-	std::vector<Card> cards;
+	std::vector<std::unique_ptr<Card>> cards;
 
 public :
 	Hand() = default; //Déclaration default explicit du constructeur 
 	~Hand() = default; //Déclaration default explicit du destructeur 
 
-	void addCard(const Card& card);
-	void removeCard(const Card& card);
+	void addCard(const std::unique_ptr<Card>& card) { cards.push_back(std::move(card)); }
+	void removeCard(const Card* card);
 
 	// nodiscard permet d'indiquer au compilateur qu'on ne doit pas ignorer le retour.
-	[[nodiscard]] std::vector<Card> getCards() const { return cards; }
-
-};
+	[[nodiscard]] const std::vector<std::unique_ptr<Card>>& getCards() const { return cards; }};
 #endif

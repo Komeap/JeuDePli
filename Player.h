@@ -16,9 +16,9 @@ public :
 	Player(std::string playerName) : name(std::move(playerName)) {}
 	virtual ~Player() = default;
 
-	virtual Card playCard(const Trick& currentTrick, const GameRules* rules) = 0;
+	virtual std::unique_ptr<Card> playCard(const Trick& currentTrick, const GameRules* rules) = 0;
 
-	void receiveCard(const Card& card) { hand.addCard(card); }
+	void receiveCard(std::unique_ptr<Card> card) { hand.addCard(card); }
 
 	// nodiscard permet d'indiquer au compilateur qu'on ne doit pas ignorer le retour.
 	[[nodiscard]] std::string getName() const { return name; }

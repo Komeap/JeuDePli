@@ -8,7 +8,7 @@ class AI : public Player {
 public : 
 	AI(std::string playerName) : Player(std::move(playerName)) {}
 
-	Card playCard(const Trick& currentTrick, const GameRules* rule) override;
+	std::unique_ptr<Card> playCard(const Trick& currentTrick, const GameRules* rule) override;
 };
 
 #endif

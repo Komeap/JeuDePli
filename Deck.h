@@ -21,7 +21,7 @@
 class Deck {
 private :
 	/// Conteneur interne stockant les cartes du deck
-	std::vector<Card> cards;
+	std::vector<std::unique_ptr<Card>> cards;
 
 	/// Générateur de seed aléatoire
 	std::random_device rd_;
@@ -67,7 +67,7 @@ public :
 	 *
 	 * @throws std::runtime_error si le deck est vide.
 	 */
-	Card drawCard();
+	std::unique_ptr<Card> drawCard();
 
 	/****************************************************
 	 * @brief Vérifie si le deck est vide.
