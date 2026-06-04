@@ -5,18 +5,45 @@
 #include "Deck.h"
 #include "Player.h"
 #include "Trick.h"
-
 #include <map>
 #include <vector>
 
 class DameDePiqueRules : public GameRules {
-public :
+public:
+
+	// Adapte le paquet de cartes en fonction du nombre de joueurs dans la partie.
+	// Prend en paramètre le paquet de base et la liste des joueurs.
+	// Retourne rien, mais modifie le paquet actuel
+	void modifyDeck(std::vector<std::unique_ptr<Card>> deck, const std::vector<std::unique_ptr<Player>>& players);
+
+	// Distribue les cartes aux joueurs.
+	// Fonction sans valeur de retour qui attribue les cartes à chaque joueur de la partie.
 	void distributeCards(Deck& deck, const std::vector<std::unique_ptr<Player>>& players) override;
 
-	// nodiscard permet d'indiquer au compilateur qu'on ne doit pas ignorer le retour.
-	[[nodiscard]] bool isValidMove(std::unique_ptr<Card> card, const Hand& hand, const Trick& trick) const override;
+	// Détermine le joueur qui doit entamer le pli.
+	// S'il s'agit du premier pli, le joueur possédant le 2 de Trèfle commence.
+	// Sinon, c'est le gagnant du pli précédent.
+	// Retourne un pointeur vers le joueur concerné.
+	Player* determinePlayerToStartTrick(const Hand& hand, const Trick& trick, const std::vector<std::unique_ptr<Player>>& players);
+
+	// L'attribut [[nodiscard]] indique au compilateur que la valeur de retour ne doit pas être ignorée.
+
+	// Vérifie si le coup joué est valide (respect de la couleur demandée, contraintes spécifiques).
+	// Prend en paramètre la carte à évaluer, la main du joueur et le pli en cours.
+	// Retourne true si la carte peut être jouée.
+
+	// Détermine le gagnant du pli en cours.
+	// Évalue la carte gagnante et identifie le joueur associé à cette carte.
+	// Retourne un pointeur vers le joueur gagnant.
 	[[nodiscard]] Player* determineTrickWinner(const Trick& trick) const override;
+
+	// Calcule le score de chaque joueur.
+	// Retourne une map associant chaque joueur à son score (entier).
 	[[nodiscard]] std::map<Player*, int> calculateScores(const std::vector<std::unique_ptr<Player>>& players) const override;
+
+	// Vérifie si la partie est terminée.
+	// Retourne true si les conditions de fin de partie sont remplies.
 	[[nodiscard]] bool isGameOver() const override;
 };
+
 #endif
