@@ -17,3 +17,13 @@ void Hand::removeCard(const Card* card) {
         cards.erase(it);
     }
 }
+
+std::string Hand::toString() const {
+    std::string result;
+
+    for (const auto& card : cards) {
+        result += card->toString() + "\n";
+    }
+
+    return result;
+}

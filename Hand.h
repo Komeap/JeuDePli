@@ -6,19 +6,22 @@
 #include <vector>
 #include <memory>
 #include <algorithm>
-
+#include <iostream>
 
 class Hand {
-private: 
+private:
 	std::vector<std::unique_ptr<Card>> cards;
 
-public :
+public:
 	Hand() = default; //Déclaration default explicit du constructeur 
 	~Hand() = default; //Déclaration default explicit du destructeur 
 
-	void addCard(const std::unique_ptr<Card>& card) { cards.push_back(std::move(card)); }
+	void addCard(std::unique_ptr<Card>& card) { cards.push_back(std::move(card)); }
 	void removeCard(const Card* card);
 
 	// nodiscard permet d'indiquer au compilateur qu'on ne doit pas ignorer le retour.
-	[[nodiscard]] const std::vector<std::unique_ptr<Card>>& getCards() const { return cards; }};
+	[[nodiscard]] const std::vector<std::unique_ptr<Card>>& getCards() const { return cards; }
+	[[nodiscard]] std::string toString() const;
+
+};
 #endif
