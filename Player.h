@@ -22,6 +22,7 @@ public :
 
 	// nodiscard permet d'indiquer au compilateur qu'on ne doit pas ignorer le retour.
 	[[nodiscard]] std::string getName() const { return name; }
+	[[nodiscard]] Hand getHand() const{ return hand; }
 
 };
 #endif
