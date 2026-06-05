@@ -1,8 +1,7 @@
 #ifndef CARD_H
 #define CARD_H
 
-#include "Suit.h"
-#include "Rank.h"
+#include <iostream>
 
 class Card {
 private :

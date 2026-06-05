@@ -5,6 +5,7 @@
 #include "Card.h"
 
 #include <vector>
+#include <memory>
 
 class Trick {
 private :
@@ -16,11 +17,11 @@ public:
 	Trick() = default;
 	~Trick() = default;
 
-	void addCard(Player* player, std::unique_ptr<Card> card);
+	void addCard(Player* player, std::unique_ptr<Card> card) { playedCards.emplace_back(player, std::move(card)); }
 
 	// nodiscard permet d'indiquer au compilateur qu'on ne doit pas ignorer le retour.
-	[[nodiscard]] Suit getLeadSuit() const;
+	[[nodiscard]] std::string getLeadSuit() const;
 	[[nodiscard]] const std::vector<std::pair<Player*, std::unique_ptr<Card>>>& getPlayedCards() const { return playedCards; }
-
+	[[nodiscard]] std::string toString() const;
 };
 #endif
