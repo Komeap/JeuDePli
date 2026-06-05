@@ -5,6 +5,9 @@
 #include "Trick.h"
 #include "GameRules.h"
 
+#include <iostream>
+#include <conio.h>
+
 class Human : public Player {
 public :
 	Human(std::string playerName) : Player(std::move(playerName)) {}

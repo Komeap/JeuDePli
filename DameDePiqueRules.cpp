@@ -27,7 +27,7 @@ void DameDePiqueRules::distributeCards(Deck& deck, const std::vector<std::unique
 	int index_player = 1;
 	while (!deck.isEmpty()) {
 		if (index_player == players.size() + 1) { index_player = 1;}
-		players[index_player]->receiveCard(deck.drawCard());
+		players[index_player]->receiveCard(std::move(deck.drawCard()));
 	}
 }
 
