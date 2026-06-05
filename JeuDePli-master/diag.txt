@@ -1,0 +1,97 @@
+le site c'est mermaid live editor
+
+classDiagram
+    %% Core Entities
+    class Card {
+        +Suit suit
+        +Rank rank
+        +int points
+        +toString() string
+    }
+
+    class Deck {
+        -vector~Card~ cards
+        +shuffle()
+        +drawCard() Card
+        +isEmpty() bool
+    }
+
+    class Hand {
+        -vector~Card~ cards
+        +addCard(Card)
+        +removeCard(Card)
+        +getCards() vector~Card~
+    }
+
+    class Trick {
+        -vector~pair~Player*, Card~~ playedCards
+        +addCard(Player*, Card)
+        +getLeadSuit() Suit
+        +getPlayedCards() vector~pair~Player*, Card~~
+    }
+
+    %% Player Abstraction
+    class Player {
+        <<abstract>>
+        #string name
+        #Hand hand
+        +playCard(Trick currentTrick, GameRules* rules)* Card
+        +receiveCard(Card)
+        +getName() string
+    }
+
+    class HumanPlayer {
+        +playCard(Trick currentTrick, GameRules* rules) Card
+    }
+
+    class AIPlayer {
+        +playCard(Trick currentTrick, GameRules* rules) Card
+    }
+
+    %% Strategy Pattern for Games
+    class GameRules {
+        <<abstract>>
+        +distributeCards(Deck&, vector~Player*~&)
+        +isValidMove(Card, Hand, Trick)* bool
+        +determineTrickWinner(Trick)* Player*
+        +calculateScores(vector~Player*~)* map~Player*, int~
+        +isGameOver()* bool
+    }
+
+    class DameDePiqueRules {
+        +isValidMove(Card, Hand, Trick) bool
+        +determineTrickWinner(Trick) Player*
+        +calculateScores(vector~Player*~) map~Player*, int~
+    }
+    
+    class TarotRules {
+        +isValidMove(Card, Hand, Trick) bool
+        +determineTrickWinner(Trick) Player*
+    }
+
+    %% Main Engine
+    class GameEngine {
+        -vector~unique_ptr~Player~~ players
+        -unique_ptr~GameRules~ rules
+        -Deck deck
+        +setupGame(GameType)
+        +playTrick()
+        +playMatch()
+        +displayResults()
+    }
+
+    %% Relationships
+    GameEngine *-- "1" GameRules : utilises (Strategy)
+    GameEngine *-- "4..*" Player : gère
+    GameEngine *-- "1" Deck : possède
+    
+    Player <|-- HumanPlayer : hérite
+    Player <|-- AIPlayer : hérite
+    Player *-- "1" Hand : possède
+    
+    GameRules <|-- DameDePiqueRules : implémente
+    GameRules <|-- TarotRules : implémente
+    
+    Hand o-- "*" Card : contient
+    Deck o-- "*" Card : contient
+    Trick o-- "*" Card : contient

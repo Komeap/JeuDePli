@@ -1,0 +1,11 @@
+{
+    "nomJeu": "Dame de Pique",
+    "cartes": [
+      { "famille": "Pique", "valeur": "Deux", "points": 0 },
+      { "famille": "Pique", "valeur": "Trois", "points": 0 },
+      { "famille": "Pique", "valeur": "Reine", "points": 13 },
+      { "famille": "Pique", "valeur": "As", "points": 0 },
+      { "famille": "Coeur", "valeur": "Deux", "points": 1 },
+      { "famille": "Coeur", "valeur": "Trois", "points": 1 }
+    ]
+  }
