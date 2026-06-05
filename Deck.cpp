@@ -48,14 +48,3 @@ std::unique_ptr<Card> Deck::drawCard() {
     cards.pop_back();
     return card;
 }
-
-/* *******************************************************************
-* @brief isEmpty - Vérification  
-* ********************************************************************
-* @pre Nécessite : Rien
-* @return Sortie : 
-* @post Entraîne :
-*/
-bool Deck::isEmpty() const {
-	return cards.empty();
-}
