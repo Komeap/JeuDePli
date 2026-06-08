@@ -1,0 +1,7 @@
+{
+	"nomJeu":"wowo",
+	"cartes":[
+		{"famille":"Pic", "nom":"As", "valeur":11},
+		{"famille":"Pic", "nom":"As", "valeur":11}
+	]
+}

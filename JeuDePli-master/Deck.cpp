@@ -1,4 +1,5 @@
 #include "Deck.h"
+#include <memory>
 
 /// @file Implémentation de la classe Deck
 
@@ -22,7 +23,7 @@ void Deck::shuffle() {
 		throw std::runtime_error("Deck::shuffle - empty deck");
 	}
 
-	std::ranges::shuffle(cards, rng_);
+	std::ranges::shuffle(cards, objGenerateurAleatoire);
 }
 
 
