@@ -60,12 +60,14 @@ Player* DameDePiqueRules::determineTrickWinner(const Trick& trick) const {
 
 // Determine le joueur qui commence a jouer
 // Le gagnant du dernier pli ou le joueur avec la bonne carte au premier tours
+// Peut etre a factoriser mais flemme
 Player* DameDePiqueRules::determinePlayerToStartTrick(const Hand& hand, const Trick& trick, const std::vector<std::unique_ptr<Player>>& players) {
+	Player* startingPlayer = players[0].get();
 	if (trick.getPlayedCards().empty()) {
 		if (players.size() <= 4) {
 			for (size_t i = 1; i < players.size(); i++) {
-				for (size_t vrejvpiq = 1; vrejvpiq < players[i]->getHand().getCards().size(); vrejvpiq++) {
-					if (players[i]->getHand().getCards()[vrejvpiq]->getSuit() == "Trefle" && players[i]->getHand().getCards()[vrejvpiq]->getRank() == "2") {
+				for (size_t w = 1; w < players[i]->getHand().getCards().size(); w++) {
+					if (players[i]->getHand().getCards()[w]->getSuit() == "Clubs" && players[i]->getHand().getCards()[w]->getRank() == "2") {
 						Player* startingPlayer = players[i].get();
 					}
 				}
@@ -74,27 +76,52 @@ Player* DameDePiqueRules::determinePlayerToStartTrick(const Hand& hand, const Tr
 		}
 		else if (players.size() == 5) {
 			for (size_t i = 1; i < players.size(); i++) {
-				for (size_t vrejvpiq = 1; vrejvpiq < players[i]->getHand().getCards().size(); vrejvpiq++) {
-					if (players[i]->getHand().getCards()[vrejvpiq]->getSuit() == "Trefle" && players[i]->getHand().getCards()[vrejvpiq]->getRank() == "3") {
-						Player* startingPlayer = players[i].get();
+				for (size_t w = 1; w < players[i]->getHand().getCards().size(); w++) {
+					if (players[i]->getHand().getCards()[w]->getSuit() == "Clubs" && players[i]->getHand().getCards()[w]->getRank() == "3") { // Verifie si la carte est dans la main du joueur
+						Player* startingPlayer = players[i].get(); // set le joueur qui commence si il a la carte
 					}
 				}
-				players[i]->getHand();
+				players[i]->getHand(); // test le joueur suivant 
 			}
 		}
 		else if (players.size() == 6) {
 			for (size_t i = 1; i < players.size(); i++) {
-				for (size_t vrejvpiq = 1; vrejvpiq < players[i]->getHand().getCards().size(); vrejvpiq++) {
-					if (players[i]->getHand().getCards()[vrejvpiq]->getSuit() == "Trefle" && players[i]->getHand().getCards()[vrejvpiq]->getRank() == "4") {
+				for (size_t w = 1; w < players[i]->getHand().getCards().size(); w++) {
+					if (players[i]->getHand().getCards()[w]->getSuit() == "Clubs" && players[i]->getHand().getCards()[w]->getRank() == "4") {
 						Player* startingPlayer = players[i].get();
 					}
 				}
 				players[i]->getHand();
 			}
 		}
-	}
-	else {
+	}else {
 		Player* startingPlayer = determineTrickWinner(trick);
 	}
-	
+	return startingPlayer;
+}
+
+std::map<Player*, int> DameDePiqueRules::calculateScores(const Trick& trick, Player* trickwinner){
+	int score = 0;
+	const auto& playedCards = trick.getPlayedCards();
+	for (size_t i = 0; i < playedCards.size(); ++i) {
+		if (playedCards[i].second.get()->getSuit() == "Heart") {
+			score += 1;
+		}
+		if (playedCards[i].second.get()->getSuit() == "Spades") {
+			score += playedCards[i].second.get()->getPoints();
+		}
+	}
+	scores[trickwinner] += score;
+	return scores;
+}
+
+bool DameDePiqueRules::isGameOver() const {
+	const int SCORE_LIMIT = 100;
+
+	for (const auto& pair : scores) {
+		if (pair.second >= SCORE_LIMIT) {
+			return true;
+		}
+	}
+	return false;
 }

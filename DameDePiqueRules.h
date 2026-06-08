@@ -9,7 +9,16 @@
 #include <vector>
 
 class DameDePiqueRules : public GameRules {
+protected :
+	std::map<Player*, int> scores;
 public:
+
+	void initScores(const std::vector<std::unique_ptr<Player>>& players) {
+		scores.clear(); // Pour eviter les problemes si on fait plusieur partie d'affiler
+		for (size_t i = 0; i < players.size(); i++) {
+			scores[players[i].get()] = 0;
+		}
+	};
 
 	// Adapte le paquet de cartes en fonction du nombre de joueurs dans la partie.
 	// Prend en paramètre le paquet de base et la liste des joueurs.
@@ -39,7 +48,8 @@ public:
 
 	// Calcule le score de chaque joueur.
 	// Retourne une map associant chaque joueur à son score (entier).
-	[[nodiscard]] std::map<Player*, int> calculateScores(const std::vector<std::unique_ptr<Player>>& players) const override;
+	// PEut etre mettre en virtual 
+	[[nodiscard]] std::map<Player*, int> calculateScores(const Trick& trick, Player* trickwinner);
 
 	// Vérifie si la partie est terminée.
 	// Retourne true si les conditions de fin de partie sont remplies.
