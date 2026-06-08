@@ -6,6 +6,7 @@
 #include "GameRules.h"
 
 #include <iostream>
+#include <memory>
 #include <conio.h>
 
 class Human : public Player {

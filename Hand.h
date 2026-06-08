@@ -23,6 +23,7 @@ public:
 
 	// nodiscard permet d'indiquer au compilateur qu'on ne doit pas ignorer le retour.
 	[[nodiscard]] const std::vector<std::unique_ptr<Card>>& getCards() const { return cards; }
+	[[nodiscard]] std::vector<std::unique_ptr<Card>>& getCards() { return cards; }
 	[[nodiscard]] std::string toString() const;
 
 };
