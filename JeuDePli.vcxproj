@@ -130,6 +130,7 @@
     <ClCompile Include="Card.cpp" />
     <ClCompile Include="DameDePiqueRules.cpp" />
     <ClCompile Include="Deck.cpp" />
+    <ClCompile Include="GameEngine.cpp" />
     <ClCompile Include="Hand.cpp" />
     <ClCompile Include="Human.cpp" />
     <ClCompile Include="JeuDePli.cpp" />
