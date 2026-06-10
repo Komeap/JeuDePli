@@ -12,7 +12,7 @@
 class Human : public Player {
 public :
 	Human(std::string playerName) : Player(std::move(playerName)) {}
-
+	
 	/********************************************************************
 	* @brief Permet à un joueur humain de jouer une carte.
 	*

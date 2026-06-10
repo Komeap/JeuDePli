@@ -9,19 +9,9 @@
 #include <vector>
 
 class DameDePiqueRules : public GameRules {
-protected:
-	std::map<Player*, int> scores;
-	const int nbJoueurMax = 6;
-	const int nbJoueurMin = 3;
 
 public:
-	
-	int getNbJoueurMax(){
-		return nbJoueurMax;
-	}
-	int getNbJoueurMin() {
-		return nbJoueurMin;
-	}
+	DameDePiqueRules(const int nbMax, const int nbMin) : GameRules(nbMax, nbMin) {}; 
 
 	/********************************************************************
 	 * @brief Initialise les scores des joueurs.

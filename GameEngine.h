@@ -5,6 +5,8 @@
 #include "Deck.h"
 #include "GameRules.h"
 
+#include <conio.h>
+
 class GameEngine {
 private : 
 	std::vector<std::unique_ptr<Player>> players;
