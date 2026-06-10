@@ -35,3 +35,16 @@ std::string Hand::toString() const {
     return result;
 }
 
+std::vector<std::string> Hand::getSuitsInHand() {
+    std::string currentSuit;
+    std::vector<std::string> suitsInHand;
+    for (const auto& card : cards) {
+        currentSuit = card->getSuit();
+        if (std::find(suitsInHand.begin(), suitsInHand.end(), currentSuit) == suitsInHand.end()) {
+            //la suit (couleur) n'est pas dans le vector
+            suitsInHand.push_back(currentSuit);
+        }
+    }
+    return suitsInHand;
+}
+
