@@ -1,10 +1,19 @@
 #include "DameDePiqueRules.h"
 
-//Suppresion de certaines carte celon le nombre de joueurs, celon des regles trouver (personne a les meme)
-// SI 5 ou si joueur, faut modifier la carte de début. Gerer dans determinePlayerToStart()
+/********************************************************************
+ * @brief Adapte le paquet de cartes selon le nombre de joueurs.
+ *
+ * Supprime certaines cartes (comme les 2 ou 3 de Carreau/Trèfle) du
+ * paquet de base selon des règles spécifiques afin que le nombre de
+ * cartes soit équitable entre tous les joueurs.
+ ********************************************************************
+ * @param deck Le paquet de cartes à modifier.
+ * @param players La liste des joueurs participant à la partie.
+ * * @return void
+ */
 void DameDePiqueRules::modifyDeck(std::vector<std::unique_ptr<Card>> deck, const std::vector<std::unique_ptr<Player>>& players) {
 	int nb_joueur = players.size();
-	
+
 	if (nb_joueur == 3) {
 		std::erase(deck, Card("Carreau", "2"));
 	}
@@ -20,18 +29,36 @@ void DameDePiqueRules::modifyDeck(std::vector<std::unique_ptr<Card>> deck, const
 	}
 }
 
-// Donne les cartes une par une a chaque joueur, jusqu'a la fin du paquet 
-// puisque on a modifier le paquet avant pour qu'il y ait le bon nombre de carte
-void DameDePiqueRules::distributeCards(Deck& deck, const std::vector<std::unique_ptr<Player>>& players){
+/********************************************************************
+ * @brief Distribue les cartes aux joueurs.
+ *
+ * Mélange le paquet puis distribue les cartes une par une à chaque
+ * joueur jusqu'à ce que le paquet soit vide (le paquet ayant été
+ * préalablement adapté au bon nombre de cartes).
+ ********************************************************************
+ * @param deck Le paquet de cartes à distribuer.
+ * @param players La liste des joueurs de la partie.
+ * * @return void
+ */
+void DameDePiqueRules::distributeCards(Deck& deck, const std::vector<std::unique_ptr<Player>>& players) {
 	deck.shuffle();
 	int index_player = 1;
 	while (!deck.isEmpty()) {
-		if (index_player == players.size() + 1) { index_player = 1;}
+		if (index_player == players.size() + 1) { index_player = 1; }
 		players[index_player]->receiveCard(std::move(deck.drawCard()));
 	}
 }
 
-// Donne le joueur qui a gagner le pli
+/********************************************************************
+ * @brief Détermine le gagnant du pli en cours.
+ *
+ * Parcourt les cartes jouées pour trouver la carte de la couleur
+ * demandée ayant la valeur la plus élevée, et identifie le joueur
+ * associé.
+ ********************************************************************
+ * @param trick Le pli en cours à évaluer.
+ * * @return Player* Un pointeur vers le joueur ayant remporté le pli.
+ */
 Player* DameDePiqueRules::determineTrickWinner(const Trick& trick) const {
 	// On met le winner au premier joueur/carte et on prend la couleur demander
 	std::string ledSuit = trick.getPlayedCards().front().second->getSuit();
@@ -58,9 +85,18 @@ Player* DameDePiqueRules::determineTrickWinner(const Trick& trick) const {
 	return winningPlayer;
 }
 
-// Determine le joueur qui commence a jouer
-// Le gagnant du dernier pli ou le joueur avec la bonne carte au premier tours
-// Peut etre a factoriser mais flemme
+/********************************************************************
+ * @brief Détermine le joueur qui doit entamer le pli.
+ *
+ * S'il s'agit du premier pli de la partie, cherche le joueur possédant
+ * la carte de démarrage (ex: le 2, 3 ou 4 de Trèfle selon le nombre de
+ * joueurs). Sinon, retourne le gagnant du dernier pli.
+ ********************************************************************
+ * @param hand La main du joueur.
+ * @param trick Le pli actuel.
+ * @param players La liste des joueurs de la partie.
+ * * @return Player* Un pointeur vers le joueur qui doit commencer.
+ */
 Player* DameDePiqueRules::determinePlayerToStartTrick(const Hand& hand, const Trick& trick, const std::vector<std::unique_ptr<Player>>& players) {
 	Player* startingPlayer = players[0].get();
 	if (trick.getPlayedCards().empty()) {
@@ -94,13 +130,24 @@ Player* DameDePiqueRules::determinePlayerToStartTrick(const Hand& hand, const Tr
 				players[i]->getHand();
 			}
 		}
-	}else {
+	}
+	else {
 		Player* startingPlayer = determineTrickWinner(trick);
 	}
 	return startingPlayer;
 }
 
-std::map<Player*, int> DameDePiqueRules::calculateScores(const Trick& trick, Player* trickwinner){
+/********************************************************************
+ * @brief Calcule le score de chaque joueur.
+ *
+ * Attribue 1 point pour chaque carte de Cœur et la valeur correspondante
+ * pour les cartes de Pique remportées dans le pli.
+ ********************************************************************
+ * @param trick Le pli venant d'être joué.
+ * @param trickwinner Le joueur ayant remporté le pli.
+ * * @return std::map<Player*, int> La map des scores mise à jour.
+ */
+std::map<Player*, int> DameDePiqueRules::calculateScores(const Trick& trick, Player* trickwinner) {
 	int score = 0;
 	const auto& playedCards = trick.getPlayedCards();
 	for (size_t i = 0; i < playedCards.size(); ++i) {
@@ -115,6 +162,14 @@ std::map<Player*, int> DameDePiqueRules::calculateScores(const Trick& trick, Pla
 	return scores;
 }
 
+/********************************************************************
+ * @brief Vérifie si la partie est terminée.
+ *
+ * Détermine si les conditions de fin de partie sont atteintes,
+ * c'est-à-dire si au moins un joueur a atteint 100 points.
+ ********************************************************************
+ * * @return bool True si la partie est finie, False sinon.
+ */
 bool DameDePiqueRules::isGameOver() const {
 	const int SCORE_LIMIT = 100;
 
@@ -124,4 +179,20 @@ bool DameDePiqueRules::isGameOver() const {
 		}
 	}
 	return false;
+}
+
+/********************************************************************
+ * @brief Vérifie si le coup joué est valide.
+ *
+ * Contrôle que la carte choisie par le joueur respecte les règles
+ * du jeu, comme par exemple fournir à la couleur demandée ou jouer
+ * une carte valide en début de pli.
+ ********************************************************************
+ * @param card Pointeur unique vers la carte que le joueur souhaite jouer.
+ * @param hand La main actuelle du joueur.
+ * @param trick Le pli en cours.
+ * * @return bool True si la carte peut être jouée, False sinon.
+ */
+bool DameDePiqueRules::isValidMove(std::unique_ptr<Card> card, const Hand& hand, const Trick& trick) const {
+
 }
