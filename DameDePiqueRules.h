@@ -15,6 +15,14 @@ protected:
 	const int nbJoueurMin = 3;
 
 public:
+	
+	int getNbJoueurMax(){
+		return nbJoueurMax;
+	}
+	int getNbJoueurMin() {
+		return nbJoueurMin;
+	}
+
 	/********************************************************************
 	 * @brief Initialise les scores des joueurs.
 	 *
@@ -82,7 +90,7 @@ public:
 	 * * @note L'attribut [[nodiscard]] indique au compilateur que la valeur
 	 * de retour ne doit pas être ignorée.
 	 */
-	[[nodiscard]] bool isValidMove(std::unique_ptr<Card> card, const Hand& hand, const Trick& trick) const override;
+	[[nodiscard]] bool isValidMove(std::unique_ptr<Card> card, const Hand& hand, const Trick& trick) const;
 
 	 /********************************************************************
 	  * @brief Détermine le gagnant du pli en cours.
