@@ -158,19 +158,3 @@ JeuDePli/
 |   `-- json.hpp
 `-- JeuDePli-master/JeuDePli.slnx
 ```
-
-## Prochaines etapes
-
-- corriger et harmoniser la configuration Visual Studio avec `main.cpp` et
-  `DeckFactory.cpp` ;
-- implementer les methodes de `DameDePiqueRules` ;
-- finaliser `GameEngine` et le deroulement d'une partie ;
-- connecter les joueurs humains et l'IA ;
-- ajouter des tests automatiques pour l'import JSON, le deck, les mains et le
-  calcul des scores.
-
-## Licence
-
-Le projet contient la licence MIT de nlohmann/json dans
-`JeuDePli-master/LICENSE.MIT`. La licence du projet doit etre precisee si une
-distribution publique est prevue.
